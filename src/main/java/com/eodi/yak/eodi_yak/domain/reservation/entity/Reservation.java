@@ -1,7 +1,7 @@
 package com.eodi.yak.eodi_yak.domain.reservation.entity;
 
 import com.eodi.yak.eodi_yak.domain.medicine.entity.Medicine;
-import com.eodi.yak.eodi_yak.domain.user.entity.User;
+import com.eodi.yak.eodi_yak.domain.user.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,7 +20,7 @@ public class Reservation {
 
         @OneToOne
         @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false, unique = true)
-        private User user;  // 유저 FK (1:1 관계)
+        private Member user;  // 유저 FK (1:1 관계)
 
         @OneToOne
         @JoinColumns({
@@ -42,9 +42,12 @@ public class Reservation {
         private Integer quantity;
 
         @Builder
-        public Reservation(LocalDateTime reservationAt, String status, Integer quantity){
+        public Reservation(LocalDateTime reservationAt, String status, Integer quantity, LocalDateTime pickupDeadline){
                 this.reservationAt = reservationAt;
                 this.status = status;
                 this.quantity = quantity;
+                this.pickupDeadline = pickupDeadline;
         }
+
+        //pickupDeadline
 }
