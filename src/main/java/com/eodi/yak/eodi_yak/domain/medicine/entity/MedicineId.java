@@ -2,9 +2,18 @@ package com.eodi.yak.eodi_yak.domain.medicine.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.io.Serializable;
 
+@Getter
+@Setter
 @Embeddable
+@NoArgsConstructor
+@AllArgsConstructor
 public class MedicineId implements Serializable {
 
     @Column(name = "me_name")
@@ -13,12 +22,6 @@ public class MedicineId implements Serializable {
     @Column(name = "pa_code")
     private String paCode;
 
-    public MedicineId() {}
-
-    public MedicineId(String meName, String paCode) {
-        this.meName = meName;
-        this.paCode = paCode;
-    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
