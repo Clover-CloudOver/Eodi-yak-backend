@@ -19,8 +19,8 @@ public class Pharmacy {
         @Column(name = "pa_code")
         private String paCode;
 
-        @Column(name = "name")
-        private String name;
+        @Column(name = "pa_name")
+        private String paName;
 
         @Column(name = "latitude")
         private BigDecimal latitude;
@@ -41,11 +41,11 @@ public class Pharmacy {
         private LocalTime closeTime;
 
         @Builder
-        public Pharmacy(String paCode, String name, BigDecimal latitude,
+        public Pharmacy(String paCode, String paName, BigDecimal latitude,
                         BigDecimal longitude, String phoneNumber,
                         String email, LocalTime openTime, LocalTime closeTime){
                 this.paCode = paCode;
-                this.name = name;
+                this.paName = paName;
                 this.latitude = latitude;
                 this.longitude = longitude;
                 this.phoneNumber = phoneNumber;
