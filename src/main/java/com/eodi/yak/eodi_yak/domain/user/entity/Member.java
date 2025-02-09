@@ -7,8 +7,8 @@ import lombok.*;
 @Setter
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name="user")
-public class User {
+@Table(name="member")
+public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -24,7 +24,7 @@ public class User {
     private String phoneNumber;
 
     @Builder
-    public User(String userEmail, String password, String phoneNumber){
+    public Member(String userEmail, String password, String phoneNumber){
         this.userEmail = userEmail;
         this.password = password;
         this.phoneNumber = phoneNumber;
