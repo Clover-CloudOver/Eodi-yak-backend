@@ -3,8 +3,6 @@ package com.eodi.yak.eodi_yak.domain.user.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Setter
 @Getter
