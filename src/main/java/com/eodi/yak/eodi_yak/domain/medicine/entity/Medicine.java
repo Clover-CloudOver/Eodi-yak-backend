@@ -26,9 +26,16 @@ public class Medicine {
         @Column(name = "updated_at")
         private LocalDateTime updatedAt;
 
+        @PreUpdate
+        public void preUpdate() {
+                this.updatedAt = LocalDateTime.now();
+        }
+
         @Builder
-        public Medicine(String meName, Integer stock){
+        public Medicine(String meName, Pharmacy pharmacy, Integer stock){
                 this.id = new MedicineId(meName, pharmacy.getPaCode());
+                this.pharmacy = pharmacy;
                 this.stock = stock;
+                this.updatedAt = LocalDateTime.now();
         }
 }
