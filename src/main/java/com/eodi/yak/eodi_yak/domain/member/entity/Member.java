@@ -14,8 +14,8 @@ public class Member {
     @Column(name = "member_id")
     private Long memberId;
 
-     @Column(name = "user_email", nullable = false)
-     private String userEmail;
+    @Column(name = "user_email", nullable = false)
+    private String userEmail;
 
     @Column(name = "password", nullable = false)
     private String password;

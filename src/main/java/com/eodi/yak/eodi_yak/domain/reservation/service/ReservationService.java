@@ -19,11 +19,9 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ReservationService {
-
     private final ReservationRepository reservationRepository;
     private final MemberRepository memberRepository;
     private final MedicineRepository medicineRepository;
-
 
     // 특정 사용자 예약 목록 조회
     public List<ReservationResponse> getReservationsByUser(Long memberId) {
