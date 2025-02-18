@@ -14,8 +14,8 @@ public class Member {
     @Column(name = "member_id")
     private Long memberId;
 
-    // @Column(name = "user_email", nullable = false)
-    // private String userEmail;
+     @Column(name = "user_email", nullable = false)
+     private String userEmail;
 
     @Column(name = "password", nullable = false)
     private String password;
@@ -24,7 +24,8 @@ public class Member {
     private String phoneNumber;
 
     @Builder
-    public Member(String password, String phoneNumber){
+    public Member(String email, String password, String phoneNumber){
+        this.userEmail = email;
         this.password = password;
         this.phoneNumber = phoneNumber;
     }

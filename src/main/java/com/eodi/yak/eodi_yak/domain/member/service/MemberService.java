@@ -17,6 +17,7 @@ public class MemberService {
     // 유저 생성 (회원가입)
     public Member createMember(MemberSignupRequest request) {
         Member member = Member.builder()
+                .email(request.userEmail())
                 .password(request.password())
                 .phoneNumber(request.phone_number())
                 .build();
