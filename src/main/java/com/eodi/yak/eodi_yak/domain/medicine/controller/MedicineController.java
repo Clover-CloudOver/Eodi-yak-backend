@@ -1,6 +1,7 @@
 package com.eodi.yak.eodi_yak.domain.medicine.controller;
 
 import com.eodi.yak.eodi_yak.domain.medicine.entity.Medicine;
+import com.eodi.yak.eodi_yak.domain.medicine.request.RestockRequest;
 import com.eodi.yak.eodi_yak.domain.medicine.response.MedicineResponse;
 import com.eodi.yak.eodi_yak.domain.medicine.service.MedicineService;
 import com.eodi.yak.eodi_yak.domain.pharmacy.response.PageResponse;
@@ -11,6 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -55,4 +57,18 @@ public class MedicineController {
                 .map(MedicineResponse::from)
                 .collect(Collectors.toList());
     }
+
+    // TODO: 약 재입고 신청 (의사 알림 1회 (최초), 재입고 알림 1회 (사용자))
+    @PostMapping("/restocking-request")
+    @Operation(summary = "재입고 신청", description = "입력한 약에 대해 재입고를 신청합니다.")
+    public ResponseEntity<Object> createMember(@RequestBody RestockRequest request) {
+        Boolean isOk = medicineService.restockRequest(request);
+        if (isOk) {
+            return ResponseEntity.ok().build();
+        } else {
+            // 재입고 신청 실패 시 500 Internal Server Error 반환
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
 }
