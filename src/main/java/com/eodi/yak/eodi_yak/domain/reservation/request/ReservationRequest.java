@@ -6,7 +6,7 @@ import lombok.Builder;
 @Builder
 @Schema(description = "약 예약 요청")
 public record ReservationRequest(
-        @Schema(description = "사용자 고유 id(자동부여)", defaultValue = "0")
+        @Schema(description = "사용자 고유 id(자동부여)", defaultValue = "1")
         String memberId,
 
         @Schema(description = "약국 코드", defaultValue = "JDQ4MTg4MSM1MSMkMSMkMCMkMDMkNDgxMzUxIzIxIyQyIyQ5IyQwMCQ0NjE0ODEjODEjJDEjJDIjJDgz")
