@@ -1,4 +1,4 @@
-package com.eodi.yak.eodi_yak.domain.user.entity;
+package com.eodi.yak.eodi_yak.domain.member.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -11,8 +11,8 @@ import lombok.*;
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private Long userId;
+    @Column(name = "member_id")
+    private Long memberId;
 
     // @Column(name = "user_email", nullable = false)
     // private String userEmail;

@@ -1,11 +1,11 @@
-package com.eodi.yak.eodi_yak.domain.user.request;
+package com.eodi.yak.eodi_yak.domain.member.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
 @Builder
 @Schema(description = "회원가입 요청")
-public record UserSignupRequest(
+public record MemberSignupRequest(
         // @Schema(description = "사용자 이메일", defaultValue = "test@test.com")
         // String userEmail,
 
