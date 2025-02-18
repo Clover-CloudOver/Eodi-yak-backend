@@ -1,11 +1,13 @@
 package com.eodi.yak.eodi_yak.domain.reservation.service;
 
+import com.eodi.yak.eodi_yak.domain.medicine.repository.MedicineRepository;
+import com.eodi.yak.eodi_yak.domain.member.entity.Member;
 import com.eodi.yak.eodi_yak.domain.medicine.entity.Medicine;
 import com.eodi.yak.eodi_yak.domain.reservation.request.ReservationRequest;
 import com.eodi.yak.eodi_yak.domain.reservation.response.ReservationResponse;
 import com.eodi.yak.eodi_yak.domain.reservation.entity.Reservation;
 import com.eodi.yak.eodi_yak.domain.reservation.repository.ReservationRepository;
-import com.eodi.yak.eodi_yak.domain.user.entity.Member;
+import com.eodi.yak.eodi_yak.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,10 +21,13 @@ import java.util.stream.Collectors;
 public class ReservationService {
 
     private final ReservationRepository reservationRepository;
+    private final MemberRepository memberRepository;
+    private final MedicineRepository medicineRepository;
+
 
     // 특정 사용자 예약 목록 조회
-    public List<ReservationResponse> getReservationsByUser(Long userId) {
-        return reservationRepository.findByUser_UserId(userId)
+    public List<ReservationResponse> getReservationsByUser(Long memberId) {
+        return reservationRepository.findByMember_MemberId(memberId)
                 .stream()
                 .map(ReservationResponse::from)
                 .collect(Collectors.toList());

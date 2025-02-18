@@ -13,7 +13,7 @@ public record ReservationResponse(
         Long id,
 
         @Schema(description = "사용자 id", defaultValue = "0")
-        Long userId,
+        Long memberId,
 
         @Schema(description = "약국 코드", defaultValue = "JDQ4MTg4MSM1MSMkMSMkMCMkMDMkNDgxMzUxIzIxIyQyIyQ5IyQwMCQ0NjE0ODEjODEjJDEjJDIjJDgz")
         String pharmacyCode,
@@ -33,7 +33,7 @@ public record ReservationResponse(
     public static ReservationResponse from(Reservation reservation) {
         return ReservationResponse.builder()
                 .id(reservation.getReservationId())
-                .userId(reservation.getUser().getUserId())
+                .memberId(reservation.getMember().getMemberId())
                 .pharmacyCode(reservation.getMedicine().getPharmacy().getPaCode())
                 .medicineName(reservation.getMedicine().getId().getMeName())
                 .reservation_at(reservation.getReservationAt())
