@@ -15,7 +15,7 @@ public record ReservationRequest(
         @Schema(description = "약 이름", defaultValue = "타이레놀")
         String medicineName,
 
-        @Schema(description = "예약 수향", defaultValue = "1")
+        @Schema(description = "예약 수량", defaultValue = "1")
         Integer quantity
 ) {
 }
