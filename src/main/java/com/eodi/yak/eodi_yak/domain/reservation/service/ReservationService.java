@@ -29,27 +29,28 @@ public class ReservationService {
     }
 
     // 예약 생성
-//    @Transactional
-//    public ReservationResponse createReservation(ReservationRequest request) {
-//        // 사용자와 약 정보를 조회
-//        User user = userRepository.findById(Long.valueOf(request.userId()))
-//                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
-//
-//        Medicine medicine = medicineRepository.findByMeNameAndPaCode(request.medicineName(), request.pharmacyCode())
-//                .orElseThrow(() -> new IllegalArgumentException("해당 약을 찾을 수 없습니다."));
-//
-//        // 예약 생성
-//        Reservation reservation = Reservation.builder()
-//                .reservationAt(LocalDateTime.now())  // 현재 시간으로 예약
-//                .pickupDeadline(LocalDateTime.now().plusDays(3))  // 예약 시간에서 3일 후를 픽업 기한으로 설정
-//                .status("WAIT")  // 상태는 기본값 'WAIT'
-//                .quantity(request.quantity())
-//                .user(user)
-//                .medicine(medicine)
-//                .build();
-//        Reservation savedReservation = reservationRepository.save(reservation);
-//
-//        return ReservationResponse.from(savedReservation);
-//    }
+    @Transactional
+    public ReservationResponse createReservation(ReservationRequest request) {
+        // 사용자와 약 정보를 조회
+        Member member = memberRepository.findById(Long.valueOf(request.memberId()))
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+
+        Medicine medicine = medicineRepository.findById_MeNameAndId_PaCode(request.medicineName(), request.pharmacyCode())
+                .orElseThrow(() -> new IllegalArgumentException("해당 약을 찾을 수 없습니다."));
+
+        // 예약 생성
+        Reservation reservation = Reservation.builder()
+                .reservationAt(LocalDateTime.now())  // 현재 시간으로 예약
+                .pickupDeadline(LocalDateTime.now().plusDays(3))  // 예약 시간에서 3일 후를 픽업 기한으로 설정
+                .status("WAIT")  // 상태는 기본값 'WAIT'
+                .quantity(request.quantity())
+                .member(member)
+                .medicine(medicine)
+                .build();
+        Reservation savedReservation = reservationRepository.save(reservation);
+
+        // TODO: 예약 알림 (약사에게)
+        return ReservationResponse.from(savedReservation);
+    }
 
 }
