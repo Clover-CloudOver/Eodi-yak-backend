@@ -14,8 +14,7 @@ public record PharmacyResponse(
         BigDecimal paLongitude,
         String paPhoneNumber,
         String paEmail,
-        LocalTime openTime,
-        LocalTime closeTime
+        String address
 ) {
     public static PharmacyResponse from(Pharmacy pharmacy) {
         return PharmacyResponse.builder()
@@ -25,8 +24,7 @@ public record PharmacyResponse(
                 .paLongitude(pharmacy.getLongitude())
                 .paPhoneNumber(pharmacy.getPhoneNumber())
                 .paEmail(pharmacy.getEmail())
-                .openTime(pharmacy.getOpenTime())
-                .closeTime(pharmacy.getCloseTime())
+                .address(pharmacy.getAddress())
                 .build();
     }
 }
