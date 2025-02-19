@@ -31,6 +31,12 @@ public class PharmacyService {
         return PageResponse.of(pages.getContent().stream().map(PharmacyResponse::from).toList());
     }
 
+    // paCode를 기준으로 Pharmacy 조회
+    public Pharmacy findById(String paCode) {
+        return pharmacyRepository.findById(paCode)
+                .orElseThrow(() -> new RuntimeException("Pharmacy not found with paCode: " + paCode));
+    }
+
     // 두 지점 사이의 거리를 계산하는 Haversine 공식
     private boolean isWithinRadius(Pharmacy pharmacy, double latitude, double longitude, int radius) {
         double lat1 = Math.toRadians(latitude);
