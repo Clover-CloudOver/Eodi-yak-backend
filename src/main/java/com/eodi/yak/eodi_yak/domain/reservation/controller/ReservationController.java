@@ -19,7 +19,7 @@ public class ReservationController {
 
     private final ReservationService reservationService;
 
-    @GetMapping("/{userId}")
+    @GetMapping("/{memberId}")
     @Operation(summary = "사용자 예약 목록", description = "특정 사용자의 예약 목록을 반환합니다.")
     public ResponseEntity<List<ReservationResponse>> getMemberReservations(@PathVariable Long memberId) {
         List<ReservationResponse> reservations = reservationService.getReservationsByUser(memberId);
