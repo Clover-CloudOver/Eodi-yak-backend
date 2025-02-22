@@ -13,6 +13,8 @@ public record MedicineResponse(
         Integer meCount,
         BigDecimal paLatitude, // 약국 위도
         BigDecimal paLongitude, // 약국 경도
+        String paName, // 약국명
+        String paAddress, // 약국 주소
         LocalDateTime updatedAt
 ) {
     public static MedicineResponse from(Medicine medicine) {
@@ -22,6 +24,8 @@ public record MedicineResponse(
                 .meCount(medicine.getStock())
                 .paLatitude(medicine.getPharmacy().getLatitude())
                 .paLongitude(medicine.getPharmacy().getLongitude())
+                .paName(medicine.getPharmacy().getPaName())
+                .paAddress(medicine.getPharmacy().getAddress())
                 .updatedAt(medicine.getUpdatedAt())
                 .build();
     }
