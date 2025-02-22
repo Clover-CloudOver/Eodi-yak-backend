@@ -22,6 +22,7 @@ public class PharmacyController {
 
     private final PharmacyService pharmacyService;
 
+    /*
     @GetMapping("/nearby")
     @Operation(summary = "근처 약국 조회", description = "사용자의 위치를 기준으로 반경 내 약국 리스트를 조회합니다.")
     @Parameter(name = "page", description = "페이지 번호")
@@ -37,4 +38,5 @@ public class PharmacyController {
         PageResponse<PharmacyResponse> response = pharmacyService.findNearbyPharmacies(latitude, longitude, radius, pageable);
         return ResponseEntity.ok(response);
     }
+     */
 }
