@@ -53,6 +53,7 @@ public class MedicineController {
         // 약 이름을 포함하는 약국 리스트와 재고 찾기 (반경 내 약국으로 필터링)
         List<Medicine> medicines = medicineService.findMedicinesByNameAndPharmacyCodes(name, pharmacyCodes);
 
+        // TODO: 검색어가 약 이름인지 검증
         // 약 정보 처리 및 재고가 0인 약을 추가
         List<MedicineResponse> response = new ArrayList<>();
 
