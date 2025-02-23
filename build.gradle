@@ -48,11 +48,6 @@ tasks.named('test') {
 
 task copyPrivate(type: Copy) {
 	copy {
-		from './Eodi-yak-backend-config/db'
-		include "*"
-		into 'db'
-	}
-	copy {
 		from './Eodi-yak-backend-config/properties'
 		include "*"
 		into 'src/main/resources'
