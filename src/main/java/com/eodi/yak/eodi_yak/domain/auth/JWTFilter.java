@@ -4,9 +4,13 @@ import io.jsonwebtoken.io.IOException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequestWrapper;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.util.Collections;
+import java.util.Enumeration;
 
 @RequiredArgsConstructor
 public class JWTFilter extends OncePerRequestFilter {
@@ -31,7 +35,30 @@ public class JWTFilter extends OncePerRequestFilter {
             return;
         }
 
-        filterChain.doFilter(request, response);
-    }
 
+        // 사용자 ID 추출
+        String memberId = jwtUtil.getLoginId(token);
+
+        // 요청 수정: 헤더에 사용자 ID 추가 후, 새로운 요청으로 교체
+        HttpServletRequest modifiedRequest = new HttpServletRequestWrapper(request) {
+            @Override
+            public String getHeader(String name) {
+                if ("Authorization".equals(name)) {
+                    return "Bearer " + token;  // Authorization 헤더를 그대로 사용
+                }
+                return super.getHeader(name);
+            }
+
+            @Override
+            public Enumeration<String> getHeaders(String name) {
+                if ("X-USER-ID".equals(name)) {
+                    return Collections.enumeration(Collections.singletonList(memberId));  // X-USER-ID 헤더 추가
+                }
+                return super.getHeaders(name);
+            }
+        };
+
+        // 수정된 요청을 filterChain에 전달
+        filterChain.doFilter(modifiedRequest, response);
     }
+}
