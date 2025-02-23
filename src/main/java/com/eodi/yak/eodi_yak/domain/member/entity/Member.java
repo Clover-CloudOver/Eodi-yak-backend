@@ -6,7 +6,7 @@ import lombok.*;
 @Entity
 @Setter
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Table(name="member")
 public class Member {
     @Id
@@ -14,8 +14,8 @@ public class Member {
     @Column(name = "member_id")
     private Long memberId;
 
-    @Column(name = "user_email", nullable = false)
-    private String userEmail;
+    @Column(name = "member_email", nullable = false)
+    private String memberEmail;
 
     @Column(name = "password", nullable = false)
     private String password;
@@ -25,7 +25,7 @@ public class Member {
 
     @Builder
     public Member(String email, String password, String phoneNumber){
-        this.userEmail = email;
+        this.memberEmail = email;
         this.password = password;
         this.phoneNumber = phoneNumber;
     }
