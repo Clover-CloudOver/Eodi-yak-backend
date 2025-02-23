@@ -1,0 +1,3 @@
+[submodule "Eodi-yak-backend-config"]
+	path = Eodi-yak-backend-config
+	url = https://github.com/Clover-CloudOver/Eodi-yak-backend-config
