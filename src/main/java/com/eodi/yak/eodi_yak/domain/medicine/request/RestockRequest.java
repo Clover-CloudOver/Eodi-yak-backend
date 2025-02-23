@@ -5,9 +5,6 @@ import lombok.Builder;
 
 @Builder
 public record RestockRequest(
-        @Schema(description = "사용자 고유 id", defaultValue = "1")
-        Long memberId,
-
         @Schema(description = "약 이름", defaultValue = "타이레놀")
         String meName,
 

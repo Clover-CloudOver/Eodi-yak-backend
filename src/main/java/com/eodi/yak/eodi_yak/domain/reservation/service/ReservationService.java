@@ -33,9 +33,9 @@ public class ReservationService {
 
     // 예약 생성
     @Transactional
-    public ReservationResponse createReservation(ReservationRequest request) {
+    public ReservationResponse createReservation(String memberId, ReservationRequest request) {
         // 사용자와 약 정보를 조회
-        Member member = memberRepository.findById(Long.valueOf(request.memberId()))
+        Member member = memberRepository.findById(Long.valueOf(memberId))
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
 
         Medicine medicine = medicineRepository.findById_MeNameAndId_PaCode(request.medicineName(), request.pharmacyCode())

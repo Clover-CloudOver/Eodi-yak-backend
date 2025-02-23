@@ -26,8 +26,9 @@ public class MedicineService {
     }
 
     // TODO: 약 재입고 신청 (의사 알림 1회 (최초), 재입고 알림 1회 (사용자))
-    public boolean restockRequest(RestockRequest request){
+    public boolean restockRequest(String memberId, RestockRequest request){
         try {
+
             // 요청된 약에 대해 재입고 신청을 처리
             Medicine medicine = medicineRepository.findById_MeNameAndId_PaCode(request.meName(), request.paCode())
                     .orElseThrow(() -> new IllegalArgumentException("해당 약을 찾을 수 없습니다."));

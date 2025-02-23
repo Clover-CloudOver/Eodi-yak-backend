@@ -1,5 +1,6 @@
 package com.eodi.yak.eodi_yak.domain.medicine.controller;
 
+import com.eodi.yak.eodi_yak.domain.auth.JWTUtil;
 import com.eodi.yak.eodi_yak.domain.medicine.entity.Medicine;
 import com.eodi.yak.eodi_yak.domain.medicine.request.RestockRequest;
 import com.eodi.yak.eodi_yak.domain.medicine.response.MedicineResponse;
@@ -9,6 +10,7 @@ import com.eodi.yak.eodi_yak.domain.pharmacy.response.PageResponse;
 import com.eodi.yak.eodi_yak.domain.pharmacy.response.PharmacyResponse;
 import com.eodi.yak.eodi_yak.domain.pharmacy.service.PharmacyService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -24,9 +26,9 @@ import java.util.List;
 @Tag(name = "Medicine", description = "어디약?! 약 관련 API")
 @RequiredArgsConstructor
 public class MedicineController {
-
     private final MedicineService medicineService;
     private final PharmacyService pharmacyService;
+    private final JWTUtil jwtUtil;
 
     @GetMapping("/search")
     @Operation(summary = "약 검색", description = "입력한 약 이름을 포함하는 약국 리스트와 재고를 반환합니다.")
@@ -82,9 +84,14 @@ public class MedicineController {
 
     // TODO: 약 재입고 신청 (의사 알림 1회 (최초), 재입고 알림 1회 (사용자))
     @PostMapping("/restocking-request")
-    @Operation(summary = "재입고 신청", description = "입력한 약에 대해 재입고를 신청합니다.")
-    public ResponseEntity<Object> createMember(@RequestBody RestockRequest request) {
-        Boolean isOk = medicineService.restockRequest(request);
+    @Operation(summary = "재입고 신청",
+            description = "입력한 약에 대해 재입고를 신청합니다.",
+            security = @SecurityRequirement(name = "JWT"))
+    public ResponseEntity<Object> createMember(
+            @RequestHeader("X-USER-ID") String memberId,
+            @RequestBody RestockRequest request) {
+
+        Boolean isOk = medicineService.restockRequest(memberId, request);
         if (isOk) {
             return ResponseEntity.ok().build();
         } else {

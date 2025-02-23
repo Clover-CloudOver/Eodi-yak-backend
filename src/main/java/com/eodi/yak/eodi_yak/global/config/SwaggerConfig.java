@@ -15,23 +15,27 @@ import org.springframework.context.annotation.Bean;
                 version = "v1"
         )
 )
-
 public class SwaggerConfig {
     private static final String BEARER_TOKEN_PREFIX = "Bearer";
 
     @Bean
     public OpenAPI openAPI() {
         String securityJwtName = "JWT";
+        // 보안 요구사항 정의
         SecurityRequirement securityRequirement = new SecurityRequirement().addList(securityJwtName);
+
+        // JWT 인증 스키마 정의
         Components components = new Components()
                 .addSecuritySchemes(securityJwtName, new SecurityScheme()
                         .name(securityJwtName)
                         .type(SecurityScheme.Type.HTTP)
-                        .scheme(BEARER_TOKEN_PREFIX)
-                        .bearerFormat(securityJwtName));
+                        .scheme("bearer") // 'Bearer'를 설정
+                        .bearerFormat("JWT")
+                        .in(SecurityScheme.In.HEADER) // 헤더에서 JWT를 받도록 설정
+                        .description("JWT Token"));
 
         return new OpenAPI()
-                .addSecurityItem(securityRequirement)
-                .components(components);
+                .addSecurityItem(securityRequirement) // 보안 요구 사항 추가
+                .components(components); // 컴포넌트 추가
     }
 }
