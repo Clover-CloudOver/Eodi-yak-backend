@@ -18,9 +18,9 @@ public class Reservation {
         @Column(name = "reservation_id")
         private Long reservationId;
 
-        @OneToOne
+        @ManyToOne
         @JoinColumn(name = "member_id", referencedColumnName = "member_id", nullable = false, unique = true)
-        private Member member;  // 유저 FK (1:1 관계)
+        private Member member;  // 유저 FK
 
         @OneToOne
         @JoinColumns({
