@@ -22,12 +22,12 @@ public class Reservation {
         @JoinColumn(name = "member_id", referencedColumnName = "member_id", nullable = false, unique = true)
         private Member member;  // 유저 FK
 
-        @OneToOne
+        @ManyToOne
         @JoinColumns({
                 @JoinColumn(name = "me_name", referencedColumnName = "me_name", nullable = false, unique = true),
                 @JoinColumn(name = "pa_code", referencedColumnName = "pa_code", nullable = false, unique = true)
         })
-        private Medicine medicine;  // 약 재고 FK (1:1 관계)
+        private Medicine medicine;  // 약 재고 FK
 
         @Column(name = "reservation_at", nullable = true)
         private LocalDateTime reservationAt;
