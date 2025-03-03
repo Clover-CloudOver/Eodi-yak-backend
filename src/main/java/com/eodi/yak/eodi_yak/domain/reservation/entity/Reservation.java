@@ -19,13 +19,13 @@ public class Reservation {
         private Long reservationId;
 
         @ManyToOne
-        @JoinColumn(name = "member_id", referencedColumnName = "member_id", nullable = false, unique = true)
+        @JoinColumn(name = "member_id", referencedColumnName = "member_id", nullable = false)
         private Member member;  // 유저 FK
 
         @ManyToOne
         @JoinColumns({
-                @JoinColumn(name = "me_name", referencedColumnName = "me_name", nullable = false, unique = true),
-                @JoinColumn(name = "pa_code", referencedColumnName = "pa_code", nullable = false, unique = true)
+                @JoinColumn(name = "me_name", referencedColumnName = "me_name", nullable = false),
+                @JoinColumn(name = "pa_code", referencedColumnName = "pa_code", nullable = false)
         })
         private Medicine medicine;  // 약 재고 FK
 
