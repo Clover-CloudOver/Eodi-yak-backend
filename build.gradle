@@ -40,6 +40,9 @@ dependencies {
 
 	// JWT Token
 	implementation 'io.jsonwebtoken:jjwt:0.12.6'
+
+	// MySQL
+	implementation 'mysql:mysql-connector-java:8.0.33'
 }
 
 tasks.named('test') {
