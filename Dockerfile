@@ -3,7 +3,6 @@ FROM openjdk:17-jdk-slim AS builder
 
 # 전체 소스 코드 복사 후 빌드
 COPY . .
-RUN rm -rf business-card-config
 RUN chmod +x ./gradlew
 RUN ./gradlew bootJar	# gradlew를 통해 실행 가능한 jar파일 생성
 
