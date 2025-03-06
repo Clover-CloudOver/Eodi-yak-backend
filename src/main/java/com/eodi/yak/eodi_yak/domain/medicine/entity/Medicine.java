@@ -19,6 +19,7 @@ public class Medicine {
         @MapsId("paCode")
         @JoinColumn(name = "pa_code")
         private Pharmacy pharmacy;
+        // TODO: id에 이미 pa code 존재 -> pharmacy 삭제 가능
 
         @Column(name = "stock")
         private Integer stock;
