@@ -20,8 +20,16 @@ public class MemberServiceImpl extends MemberServiceGrpc.MemberServiceImplBase {
 
         // database에서 조회
         com.eodi.yak.eodi_yak.domain.member.entity.Member member = memberRepository.findById(Long.valueOf(memberId))
-                .orElseThrow(() -> new RuntimeException("Member not found"));
+                .orElseGet(() -> {
+                    responseObserver.onError(
+                            io.grpc.Status.NOT_FOUND.withDescription("Member not found").asRuntimeException()
+                    );
+                    return null;
+                });
 
+        if (member == null) {
+            return;  // 이미 에러를 반환했으므로, 이 시점 이후 코드 실행은 하지 않음
+        }
         // 응답 객체 생성
         Member.MemberResponse response = Member.MemberResponse.newBuilder()
                 .setMemberId(String.valueOf(member.getMemberId()))
