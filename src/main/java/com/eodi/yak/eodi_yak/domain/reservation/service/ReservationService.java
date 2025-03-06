@@ -1,13 +1,15 @@
 package com.eodi.yak.eodi_yak.domain.reservation.service;
 
 import com.eodi.yak.eodi_yak.domain.medicine.repository.MedicineRepository;
-import com.eodi.yak.eodi_yak.domain.member.entity.Member;
 import com.eodi.yak.eodi_yak.domain.medicine.entity.Medicine;
+
+// member entity를 reservation entity 파일 안에 복사
+import com.eodi.yak.eodi_yak.domain.reservation.entity.Member;
+import com.eodi.yak.eodi_yak.domain.reservation.GrpcMemberClient;
 import com.eodi.yak.eodi_yak.domain.reservation.request.ReservationRequest;
 import com.eodi.yak.eodi_yak.domain.reservation.response.ReservationResponse;
 import com.eodi.yak.eodi_yak.domain.reservation.entity.Reservation;
 import com.eodi.yak.eodi_yak.domain.reservation.repository.ReservationRepository;
-import com.eodi.yak.eodi_yak.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,8 +22,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ReservationService {
     private final ReservationRepository reservationRepository;
-    private final MemberRepository memberRepository;
     private final MedicineRepository medicineRepository;
+    private final GrpcMemberClient grpcMemberClient;
 
     // 특정 사용자 예약 목록 조회
     public List<ReservationResponse> getReservationsByUser(Long memberId) {
@@ -34,9 +36,28 @@ public class ReservationService {
     // 예약 생성
     @Transactional
     public ReservationResponse createReservation(String memberId, ReservationRequest request) {
-        // 사용자와 약 정보를 조회
-        Member member = memberRepository.findById(Long.valueOf(memberId))
-                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+        // gRPC 호출을 통해 사용자 정보 조회
+        member.Member.MemberRequest memberGrpcRequest = member.Member.MemberRequest.newBuilder()
+                .setMemberId(memberId)
+                .build();
+
+        member.Member.MemberResponse memberGrpcResponse;
+
+        try {
+            memberGrpcResponse = grpcMemberClient.getMemberId(memberGrpcRequest);
+            // memberGrpcResponse를 정상적으로 처리
+        } catch (io.grpc.StatusRuntimeException e) {
+            throw new IllegalArgumentException("사용자를 찾을 수 없습니다.");
+            // TODO: err 처리
+            //throw new MemberNotFoundException("사용자를 찾을 수 없습니다.", e);
+        }
+
+        Member member = new Member();
+        // TODO: 필수적으로 member entity는 필요하다 (many-to-one)
+        member.setMemberId(Long.valueOf(memberGrpcResponse.getMemberId()));
+        member.setMemberEmail(memberGrpcResponse.getEmail());
+        member.setPhoneNumber(memberGrpcResponse.getPhoneNumber());
+
 
         Medicine medicine = medicineRepository.findById_MeNameAndId_PaCode(request.medicineName(), request.pharmacyCode())
                 .orElseThrow(() -> new IllegalArgumentException("해당 약을 찾을 수 없습니다."));
