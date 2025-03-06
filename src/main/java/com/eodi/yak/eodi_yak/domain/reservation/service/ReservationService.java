@@ -1,20 +1,26 @@
 package com.eodi.yak.eodi_yak.domain.reservation.service;
 
-import com.eodi.yak.eodi_yak.domain.medicine.repository.MedicineRepository;
-import com.eodi.yak.eodi_yak.domain.medicine.entity.Medicine;
-
 // member entity를 reservation entity 파일 안에 복사
+import com.eodi.yak.eodi_yak.domain.medicine.entity.MedicineId;
+import com.eodi.yak.eodi_yak.domain.pharmacy.entity.Pharmacy;
+import com.eodi.yak.eodi_yak.domain.reservation.GrpcMedicineClient;
 import com.eodi.yak.eodi_yak.domain.reservation.entity.Member;
 import com.eodi.yak.eodi_yak.domain.reservation.GrpcMemberClient;
+import com.eodi.yak.eodi_yak.domain.reservation.GrpcMedicineClient;
 import com.eodi.yak.eodi_yak.domain.reservation.request.ReservationRequest;
 import com.eodi.yak.eodi_yak.domain.reservation.response.ReservationResponse;
 import com.eodi.yak.eodi_yak.domain.reservation.entity.Reservation;
 import com.eodi.yak.eodi_yak.domain.reservation.repository.ReservationRepository;
+import com.eodi.yak.eodi_yak.domain.reservation.entity.Medicine;
+import com.google.protobuf.Timestamp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,8 +28,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ReservationService {
     private final ReservationRepository reservationRepository;
-    private final MedicineRepository medicineRepository;
     private final GrpcMemberClient grpcMemberClient;
+    private final GrpcMedicineClient grpcMedicineClient;
 
     // 특정 사용자 예약 목록 조회
     public List<ReservationResponse> getReservationsByUser(Long memberId) {
@@ -36,7 +42,7 @@ public class ReservationService {
     // 예약 생성
     @Transactional
     public ReservationResponse createReservation(String memberId, ReservationRequest request) {
-        // gRPC 호출을 통해 사용자 정보 조회
+        // (1) gRPC 호출을 통해 사용자 정보 조회
         member.Member.MemberRequest memberGrpcRequest = member.Member.MemberRequest.newBuilder()
                 .setMemberId(memberId)
                 .build();
@@ -59,8 +65,35 @@ public class ReservationService {
         member.setPhoneNumber(memberGrpcResponse.getPhoneNumber());
 
 
-        Medicine medicine = medicineRepository.findById_MeNameAndId_PaCode(request.medicineName(), request.pharmacyCode())
-                .orElseThrow(() -> new IllegalArgumentException("해당 약을 찾을 수 없습니다."));
+        // (2) gRPC 호출을 통해 약 정보 조회
+        medicine.Medicine.MedicineRequest medicineGrpcRequest = medicine.Medicine.MedicineRequest.newBuilder()
+                .setMedicineName(request.medicineName())
+                .setPharmacyCode(request.pharmacyCode())
+                .build();
+
+        medicine.Medicine.MedicineResponse medicineGrpcResponse;
+
+        try {
+            medicineGrpcResponse = grpcMedicineClient.getMedicineById(medicineGrpcRequest);
+        } catch (io.grpc.StatusRuntimeException e) {
+            throw new IllegalArgumentException("약을 찾을 수 없습니다.");
+            // TODO: err 처리
+        }
+
+        Medicine medicine = new Medicine();
+        // TODO: 필수적으로 medicine entity는 필요하다 (many-to-one)
+
+        medicine.setId(new MedicineId(medicineGrpcResponse.getMedicineName(), medicineGrpcResponse.getPharmacyCode()));
+        medicine.setStock(medicineGrpcResponse.getStock());
+        medicine.setPharmacy(new Pharmacy(medicineGrpcResponse.getPharmacyCode(), medicineGrpcResponse.getPharmacyName(), new BigDecimal(medicineGrpcResponse.getPharmacyLatitude()), new BigDecimal(medicineGrpcResponse.getPharmacyLongitude()), medicineGrpcResponse.getPharmacyPhoneNumber(), medicineGrpcResponse.getPharmacyEmail(), medicineGrpcResponse.getPharmacyAddress()));
+        //medicine.setPharmacy(medicineGrpcResponse.getPharmacy()); //???
+        // TODO: medicine에서 pharmacy 정보를 조회할 적절한 방법 고민
+        Timestamp grpcTimestamp = medicineGrpcResponse.getUpdatedAt();
+        LocalDateTime updatedAt = LocalDateTime.ofInstant(
+                Instant.ofEpochSecond(grpcTimestamp.getSeconds(), grpcTimestamp.getNanos()),
+                ZoneId.systemDefault() // 시스템 기본 타임존 사용
+        );
+        medicine.setUpdatedAt(updatedAt);
 
         // 예약 생성
         Reservation reservation = Reservation.builder()
