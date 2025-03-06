@@ -7,7 +7,6 @@ import jakarta.persistence.Table;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.time.LocalTime;
 
 @Entity
 @Setter
