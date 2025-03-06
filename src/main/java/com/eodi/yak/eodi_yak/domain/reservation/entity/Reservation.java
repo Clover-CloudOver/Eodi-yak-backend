@@ -1,7 +1,8 @@
 package com.eodi.yak.eodi_yak.domain.reservation.entity;
 
 import com.eodi.yak.eodi_yak.domain.medicine.entity.Medicine;
-import com.eodi.yak.eodi_yak.domain.member.entity.Member;
+//import com.eodi.yak.eodi_yak.domain.member.entity.Member;
+import com.eodi.yak.eodi_yak.domain.reservation.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
