@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package member;
+
+service MemberService {
+  rpc GetMemberById (MemberRequest) returns (MemberResponse);
+}
+
+message MemberRequest {
+  string member_id = 1;
+}
+
+message MemberResponse {
+  string member_id = 1;
+  string email = 2;
+  string phone_number = 3;
+}
