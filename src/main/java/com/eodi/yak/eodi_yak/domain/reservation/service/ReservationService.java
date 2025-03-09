@@ -1,17 +1,12 @@
 package com.eodi.yak.eodi_yak.domain.reservation.service;
 
 // member entity를 reservation entity 파일 안에 복사
-import com.eodi.yak.eodi_yak.domain.medicine.entity.MedicineId;
-import com.eodi.yak.eodi_yak.domain.pharmacy.entity.Pharmacy;
 import com.eodi.yak.eodi_yak.domain.reservation.GrpcMedicineClient;
-import com.eodi.yak.eodi_yak.domain.reservation.entity.Member;
 import com.eodi.yak.eodi_yak.domain.reservation.GrpcMemberClient;
-import com.eodi.yak.eodi_yak.domain.reservation.GrpcMedicineClient;
+import com.eodi.yak.eodi_yak.domain.reservation.entity.*;
 import com.eodi.yak.eodi_yak.domain.reservation.request.ReservationRequest;
 import com.eodi.yak.eodi_yak.domain.reservation.response.ReservationResponse;
-import com.eodi.yak.eodi_yak.domain.reservation.entity.Reservation;
 import com.eodi.yak.eodi_yak.domain.reservation.repository.ReservationRepository;
-import com.eodi.yak.eodi_yak.domain.reservation.entity.Medicine;
 import com.google.protobuf.Timestamp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
