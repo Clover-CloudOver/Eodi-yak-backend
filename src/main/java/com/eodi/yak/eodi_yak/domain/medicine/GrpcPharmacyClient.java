@@ -11,7 +11,7 @@ public class GrpcPharmacyClient {
     private final PharmacyServiceGrpc.PharmacyServiceBlockingStub stub;
 
     public GrpcPharmacyClient() {
-        ManagedChannel channel = NettyChannelBuilder.forAddress("pharmacy.default.svc.cluster.local", 9090)
+        ManagedChannel channel = NettyChannelBuilder.forAddress("pharmacy.eodi-yak.svc.cluster.local", 9090)
                 .usePlaintext()
                 .build();
         stub = PharmacyServiceGrpc.newBlockingStub(channel);
