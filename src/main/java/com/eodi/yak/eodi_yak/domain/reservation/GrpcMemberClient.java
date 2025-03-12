@@ -13,7 +13,7 @@ public class GrpcMemberClient {
     private final MemberServiceGrpc.MemberServiceBlockingStub stub;
 
     public GrpcMemberClient() {
-        ManagedChannel channel = NettyChannelBuilder.forAddress("localhost", 50051)
+        ManagedChannel channel = NettyChannelBuilder.forAddress("member.default.svc.cluster.local", 50051)
                 .usePlaintext()
                 .build();
         stub = MemberServiceGrpc.newBlockingStub(channel);

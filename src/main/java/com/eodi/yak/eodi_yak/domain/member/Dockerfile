@@ -3,19 +3,10 @@ FROM openjdk:17-jdk-slim AS builder
 
 # 전체 소스 코드 복사
 COPY . .
-
-# application.yaml 복사
-#COPY  ../../../../../../../resources /app/config/
-COPY  src/main/resources /app/config/
-
-# config 디렉토리 내 모든 파일 복사
-#COPY ../../global/config /app/config/
-COPY src/main/java/com/eodi/yak/eodi_yak/global/config /app/config/
-
-# EodiYakApplication.java 복사
-#COPY ../../EodiYakApplication.java /app/
-COPY src/main/java/com/eodi/yak/eodi_yak/EodiYakApplication.java /app/
-
+# 불필요한 도메인 삭제
+RUN rm -rf src/main/java/com/eodi/yak/eodi_yak/domain/medicine
+RUN rm -rf src/main/java/com/eodi/yak/eodi_yak/domain/reservation
+RUN rm -rf src/main/java/com/eodi/yak/eodi_yak/domain/pharmacy
 
 RUN chmod +x ./gradlew
 RUN ./gradlew bootJar	# gradlew를 통해 실행 가능한 jar파일 생성
@@ -24,8 +15,8 @@ RUN ./gradlew bootJar	# gradlew를 통해 실행 가능한 jar파일 생성
 FROM openjdk:17
 COPY --from=builder build/libs/*.jar app.jar
 
-# 애플리케이션 포트 열기
-EXPOSE 8080
+# 애플리케이션 포트 열기 (& gRPC 서버)
+EXPOSE 8080 50051
 
 # 애플리케이션 실행
-ENTRYPOINT ["java", "-jar", "/app.jar", "--spring.profiles.active=dev"]
+ENTRYPOINT ["java", "-jar", "/app.jar", "--spring.profiles.active=test"]

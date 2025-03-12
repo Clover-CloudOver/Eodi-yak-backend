@@ -1,6 +1,5 @@
 package com.eodi.yak.eodi_yak.domain.medicine.entity;
 
-import com.eodi.yak.eodi_yak.domain.pharmacy.entity.Pharmacy;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,7 +8,7 @@ import java.time.LocalDateTime;
 @Entity
 @Setter
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Table(name="medicine")
 public class Medicine {
         @EmbeddedId

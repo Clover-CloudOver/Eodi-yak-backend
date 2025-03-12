@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package pharmacy;
+
+service PharmacyService {
+  rpc FindNearbyPharmacies (PharmacyNearRequest) returns (PageResponse);
+  rpc FindNearbyId (PharmacyIdRequest) returns (Pharmacy);
+}
+
+message PharmacyNearRequest {
+  string latitude = 1;
+  string longitude = 2;
+  int32 radius = 3;
+  Pageable pageable = 4;
+}
+
+message PharmacyIdRequest {
+  string paCode = 1;
+}
+
+message Pharmacy {
+  string paCode = 1;
+  string paName = 2;
+  string address = 3;
+  string latitude = 4;
+  string longitude = 5;
+  string phoneNumber = 6;
+  string email = 7;
+}
+
+message PageResponse {
+  repeated Pharmacy results = 1;
+  int32 totalItems = 2;
+}
+
+message Pageable {
+  int32 page = 1;
+  int32 size = 2;
+}

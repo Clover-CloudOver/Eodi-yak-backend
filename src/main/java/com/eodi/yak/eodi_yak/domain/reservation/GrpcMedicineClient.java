@@ -11,7 +11,7 @@ public class GrpcMedicineClient {
     private final MedicineServiceGrpc.MedicineServiceBlockingStub stub;
 
     public GrpcMedicineClient() {
-        ManagedChannel channel = NettyChannelBuilder.forAddress("localhost", 50052)
+        ManagedChannel channel = NettyChannelBuilder.forAddress("medicine.default.svc.cluster.local", 50052)
                 .usePlaintext()
                 .build();
         stub = MedicineServiceGrpc.newBlockingStub(channel);
