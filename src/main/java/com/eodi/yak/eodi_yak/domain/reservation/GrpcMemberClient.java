@@ -13,7 +13,7 @@ public class GrpcMemberClient {
     private final MemberServiceGrpc.MemberServiceBlockingStub stub;
 
     public GrpcMemberClient() {
-        ManagedChannel channel = NettyChannelBuilder.forAddress("member.eodi-yak.svc.cluster.local", 50051)
+        ManagedChannel channel = NettyChannelBuilder.forAddress("member.eodi-yak.svc.cluster.local", 9090)
                 .usePlaintext()
                 .build();
         stub = MemberServiceGrpc.newBlockingStub(channel);
