@@ -53,7 +53,6 @@ pipeline {
 
                     for (service in services) {
                         parallelStages["Build & Push ${service}"] = {
-                            stage("Build & Push ${service}") {
                                 steps {
                                     withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "${AWS_ECR_CREDENTIAL_ID}"]]) {
                                         script {
@@ -68,7 +67,6 @@ pipeline {
                                             """
                                         }
                                     }
-                                }
                             }
                         }
                     }
