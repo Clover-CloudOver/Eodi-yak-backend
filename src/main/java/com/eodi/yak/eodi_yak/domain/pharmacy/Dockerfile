@@ -12,7 +12,7 @@ RUN rm -rf src/main/java/com/eodi/yak/eodi_yak/domain/reservation
 RUN apt-get update && apt-get install -y protobuf-compiler
 
 # pharmacy.proto 컴파일
-RUN protoc --proto_path=./proto --java_out=./src/main/java --grpc-java_out=./src/main/java pharmacy.proto
+RUN protoc --proto_path=src/main/proto --java_out=./src/main/java --grpc-java_out=./src/main/java pharmacy.proto
 
 
 RUN chmod +x ./gradlew
