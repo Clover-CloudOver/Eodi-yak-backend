@@ -1,6 +1,9 @@
 # 빌드 스테이지
 FROM openjdk:17-jdk-slim AS builder
 
+# 필요한 패키지 설치 (protobuf 컴파일러 및 wget)
+RUN apt-get update && apt-get install -y protobuf-compiler wget
+
 # 전체 소스 코드 복사
 COPY . .
 
@@ -14,7 +17,6 @@ RUN wget https://repo1.maven.org/maven2/io/grpc/protoc-gen-grpc-java/1.45.1/prot
     chmod +x /usr/local/bin/protoc-gen-grpc-java \
     
 # gRPC 관련 코드 생성 (프로토콜 파일 컴파일)
-RUN apt-get update && apt-get install -y protobuf-compiler
 RUN protoc --proto_path=src/main/proto --java_out=./src/main/java --grpc-java_out=./src/main/java pharmacy.proto
 RUN protoc --proto_path=src/main/proto --java_out=./src/main/java --grpc-java_out=./src/main/java medicine.proto
 
