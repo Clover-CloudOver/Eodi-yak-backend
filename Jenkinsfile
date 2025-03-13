@@ -44,58 +44,95 @@ pipeline {
                 }
             }
         }
-
-        stage('Test Parallel Stage') {
+        
+        stage('Build & Push Services') {
             parallel {
-                stage('parallel 1st'){
-                    steps{
-                        echo 'p1'
+                stage('Build & Push medicine') {
+                    when {
+                        expression { return env.CHANGED_SERVICES.contains('medicine') }
+                    }
+                    steps {
+                        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "${AWS_ECR_CREDENTIAL_ID}"]]) {
+                            script {
+                                def dockerfilePath = "src/main/java/com/eodi/yak/eodi_yak/domain/medicine/Dockerfile"
+                                def buildContext = "${WORKSPACE}"
+                                def imageTag = "${AWS_ECR_URI}/medicine:${BUILD_NUMBER}"
+
+                                sh """
+                                    docker build -t ${imageTag} -f ${dockerfilePath} ${buildContext}
+                                    aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ECR_URI}
+                                    docker push ${imageTag}
+                                """
+                            }
+                        }
                     }
                 }
 
-                stage('parallel 2st'){
-                    steps{
-                        echo 'p2'
+                stage('Build & Push member') {
+                    when {
+                        expression { return env.CHANGED_SERVICES.contains('member') }
+                    }
+                    steps {
+                        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "${AWS_ECR_CREDENTIAL_ID}"]]) {
+                            script {
+                                def dockerfilePath = "src/main/java/com/eodi/yak/eodi_yak/domain/member/Dockerfile"
+                                def buildContext = "${WORKSPACE}"
+                                def imageTag = "${AWS_ECR_URI}/member:${BUILD_NUMBER}"
+
+                                sh """
+                                    docker build -t ${imageTag} -f ${dockerfilePath} ${buildContext}
+                                    aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ECR_URI}
+                                    docker push ${imageTag}
+                                """
+                            }
+                        }
                     }
                 }
 
-                stage('parallel 3rd'){
-                    steps{
-                        echo 'p3'
+                stage('Build & Push pharmacy') {
+                    when {
+                        expression { return env.CHANGED_SERVICES.contains('pharmacy') }
+                    }
+                    steps {
+                        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "${AWS_ECR_CREDENTIAL_ID}"]]) {
+                            script {
+                                def dockerfilePath = "src/main/java/com/eodi/yak/eodi_yak/domain/pharmacy/Dockerfile"
+                                def buildContext = "${WORKSPACE}"
+                                def imageTag = "${AWS_ECR_URI}/pharmacy:${BUILD_NUMBER}"
+
+                                sh """
+                                    docker build -t ${imageTag} -f ${dockerfilePath} ${buildContext}
+                                    aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ECR_URI}
+                                    docker push ${imageTag}
+                                """
+                            }
+                        }
+                    }
+                }
+
+                stage('Build & Push reservation') {
+                    when {
+                        expression { return env.CHANGED_SERVICES.contains('reservation') }
+                    }
+                    steps {
+                        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "${AWS_ECR_CREDENTIAL_ID}"]]) {
+                            script {
+                                def dockerfilePath = "src/main/java/com/eodi/yak/eodi_yak/domain/reservation/Dockerfile"
+                                def buildContext = "${WORKSPACE}"
+                                def imageTag = "${AWS_ECR_URI}/reservation:${BUILD_NUMBER}"
+
+                                sh """
+                                    docker build -t ${imageTag} -f ${dockerfilePath} ${buildContext}
+                                    aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ECR_URI}
+                                    docker push ${imageTag}
+                                """
+                            }
+                        }
                     }
                 }
             }
         }
-        // stage('Build & Push Services') {
-        //     steps {
-        //         script {
-        //             def services = env.CHANGED_SERVICES.split(",")
-        //             def parallelStages = [:]
 
-        //             for (service in services) {
-        //                 parallelStages["Build & Push ${service}"] = {
-        //                         steps {
-        //                             withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "${AWS_ECR_CREDENTIAL_ID}"]]) {
-        //                                 script {
-        //                                     def dockerfilePath = "src/main/java/com/eodi/yak/eodi_yak/domain/${service}/Dockerfile"
-        //                                     def buildContext = "${WORKSPACE}"  // Backend 루트를 context로 설정
-        //                                     def imageTag = "${AWS_ECR_URI}/${service}:${BUILD_NUMBER}"
-
-        //                                     sh """
-        //                                         docker build -t ${imageTag} -f ${dockerfilePath} ${buildContext}
-        //                                         aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ECR_URI}
-        //                                         docker push ${imageTag}
-        //                                     """
-        //                                 }
-        //                             }
-        //                     }
-        //                 }
-        //             }
-
-        //             parallel parallelStages
-        //         }
-        //     }
-        // }
 
         stage('Clean Up Docker Images on Jenkins Server') {
             steps {
