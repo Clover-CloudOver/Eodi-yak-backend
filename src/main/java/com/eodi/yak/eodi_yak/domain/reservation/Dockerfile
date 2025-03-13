@@ -8,6 +8,13 @@ RUN rm -rf src/main/java/com/eodi/yak/eodi_yak/domain/medicine
 RUN rm -rf src/main/java/com/eodi/yak/eodi_yak/domain/member
 RUN rm -rf src/main/java/com/eodi/yak/eodi_yak/domain/pharmacy
 
+# gRPC 관련 코드 생성 (프로토콜 파일 컴파일)
+RUN apt-get update && apt-get install -y protobuf-compiler
+
+# medicine.proto, member.proto 컴파일
+RUN protoc --proto_path=./proto --java_out=./src/main/java --grpc-java_out=./src/main/java medicine.proto
+RUN protoc --proto_path=./proto --java_out=./src/main/java --grpc-java_out=./src/main/java member.proto
+
 RUN chmod +x ./gradlew
 RUN ./gradlew bootJar	# gradlew를 통해 실행 가능한 jar파일 생성
 

@@ -3,14 +3,20 @@ FROM openjdk:17-jdk-slim AS builder
 
 # 전체 소스 코드 복사
 COPY . .
+
 # 불필요한 도메인 삭제
 RUN rm -rf src/main/java/com/eodi/yak/eodi_yak/domain/reservation
 RUN rm -rf src/main/java/com/eodi/yak/eodi_yak/domain/member
 RUN rm -rf src/main/java/com/eodi/yak/eodi_yak/domain/pharmacy
 
+# gRPC 관련 코드 생성 (프로토콜 파일 컴파일)
+RUN apt-get update && apt-get install -y protobuf-compiler
+RUN protoc --proto_path=./proto --java_out=./src/main/java --grpc-java_out=./src/main/java pharmacy.proto
+RUN protoc --proto_path=./proto --java_out=./src/main/java --grpc-java_out=./src/main/java medicine.proto
 
+# gradlew를 통해 실행 가능한 jar파일 생성
 RUN chmod +x ./gradlew
-RUN ./gradlew bootJar	# gradlew를 통해 실행 가능한 jar파일 생성
+RUN ./gradlew bootJar
 
 # 런타임 스테이지
 FROM openjdk:17
