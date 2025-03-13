@@ -45,36 +45,57 @@ pipeline {
             }
         }
 
-        stage('Build & Push Services') {
-            steps {
-                script {
-                    def services = env.CHANGED_SERVICES.split(",")
-                    def parallelStages = [:]
-
-                    for (service in services) {
-                        parallelStages["Build & Push ${service}"] = {
-                                steps {
-                                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "${AWS_ECR_CREDENTIAL_ID}"]]) {
-                                        script {
-                                            def dockerfilePath = "src/main/java/com/eodi/yak/eodi_yak/domain/${service}/Dockerfile"
-                                            def buildContext = "${WORKSPACE}"  // Backend 루트를 context로 설정
-                                            def imageTag = "${AWS_ECR_URI}/${service}:${BUILD_NUMBER}"
-
-                                            sh """
-                                                docker build -t ${imageTag} -f ${dockerfilePath} ${buildContext}
-                                                aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ECR_URI}
-                                                docker push ${imageTag}
-                                            """
-                                        }
-                                    }
-                            }
-                        }
+        stage('Test Parallel Stage') {
+            parallel {
+                stage('parallel 1st'){
+                    steps{
+                        echo 'p1'
                     }
+                }
 
-                    parallel parallelStages
+                stage('parallel 2st'){
+                    steps{
+                        echo 'p2'
+                    }
+                }
+
+                stage('parallel 3rd'){
+                    steps{
+                        echo 'p3'
+                    }
                 }
             }
         }
+        // stage('Build & Push Services') {
+        //     steps {
+        //         script {
+        //             def services = env.CHANGED_SERVICES.split(",")
+        //             def parallelStages = [:]
+
+        //             for (service in services) {
+        //                 parallelStages["Build & Push ${service}"] = {
+        //                         steps {
+        //                             withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "${AWS_ECR_CREDENTIAL_ID}"]]) {
+        //                                 script {
+        //                                     def dockerfilePath = "src/main/java/com/eodi/yak/eodi_yak/domain/${service}/Dockerfile"
+        //                                     def buildContext = "${WORKSPACE}"  // Backend 루트를 context로 설정
+        //                                     def imageTag = "${AWS_ECR_URI}/${service}:${BUILD_NUMBER}"
+
+        //                                     sh """
+        //                                         docker build -t ${imageTag} -f ${dockerfilePath} ${buildContext}
+        //                                         aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ECR_URI}
+        //                                         docker push ${imageTag}
+        //                                     """
+        //                                 }
+        //                             }
+        //                     }
+        //                 }
+        //             }
+
+        //             parallel parallelStages
+        //         }
+        //     }
+        // }
 
         stage('Clean Up Docker Images on Jenkins Server') {
             steps {
