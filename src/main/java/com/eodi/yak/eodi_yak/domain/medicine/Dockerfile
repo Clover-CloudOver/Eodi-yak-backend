@@ -13,9 +13,11 @@ RUN rm -rf src/main/java/com/eodi/yak/eodi_yak/domain/member
 RUN rm -rf src/main/java/com/eodi/yak/eodi_yak/domain/pharmacy
 
 # gRPC Java 플러그인 다운로드
-RUN wget https://repo1.maven.org/maven2/io/grpc/protoc-gen-grpc-java/1.45.1/protoc-gen-grpc-java-1.45.1-linux-x86_64.exe -O /usr/local/bin/protoc-gen-grpc-java && \
-    chmod +x /usr/local/bin/protoc-gen-grpc-java \
-    
+RUN wget https://repo1.maven.org/maven2/io/grpc/protoc-gen-grpc-java/1.45.1/protoc-gen-grpc-java-1.45.1-linux-x86_64.exe -O /usr/local/bin/protoc-gen-grpc-java
+
+# 실행 권한 부여
+RUN chmod +x /usr/local/bin/protoc-gen-grpc-java
+
 # gRPC 관련 코드 생성 (프로토콜 파일 컴파일)
 RUN protoc --proto_path=src/main/proto --java_out=./src/main/java --grpc-java_out=./src/main/java pharmacy.proto
 RUN protoc --proto_path=src/main/proto --java_out=./src/main/java --grpc-java_out=./src/main/java medicine.proto
