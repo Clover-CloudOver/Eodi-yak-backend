@@ -45,10 +45,7 @@ pipeline {
             }
         }
 
-        stage('Parallel Build & Push') {
-            when {
-                expression { env.CHANGED_SERVICES != '' }
-            }
+        stage('Build & Push Services') {
             steps {
                 script {
                     def services = env.CHANGED_SERVICES.split(",")
