@@ -1,14 +1,16 @@
 # 빌드 스테이지
 FROM openjdk:17-jdk-slim AS builder
 
-# 필요한 패키지 설치 (protobuf 컴파일러 및 wget)
-RUN apt-get update && apt-get install -y protobuf-compiler wget
+# 필요한 패키지 설치 (protobuf 컴파일러, wget, unzip)
+RUN apt-get update && apt-get install -y protobuf-compiler wget unzip
 
 ## 추가
-# Gradle 설치 (이미 설치되어 있지 않다면)
-RUN wget https://services.gradle.org/distributions/gradle-8.12.1-bin.zip -P /tmp \
-    && unzip /tmp/gradle-8.12.1-bin.zip -d /opt \
-    && ln -s /opt/gradle-8.12.1/bin/gradle /usr/bin/gradle
+# Gradle이 이미 설치되어 있지 않으면 다운로드 및 설치
+RUN if ! command -v gradle &> /dev/null; then \
+    wget https://services.gradle.org/distributions/gradle-8.12.1-bin.zip -P /tmp && \
+    unzip /tmp/gradle-8.12.1-bin.zip -d /opt && \
+    ln -s /opt/gradle-8.12.1/bin/gradle /usr/bin/gradle; \
+    fi
 
 ## 추가
 # Gradle 버전 확인
