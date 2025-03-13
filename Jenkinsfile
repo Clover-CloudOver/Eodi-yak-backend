@@ -58,6 +58,9 @@ pipeline {
                                 def buildContext = "${WORKSPACE}"
                                 def imageTag = "${AWS_ECR_URI}/medicine:${BUILD_NUMBER}"
 
+                                sh 'pwd'
+                                echo "WORKSPACE : ${WORKSPACE}"
+
                                 sh """
                                     docker build -t ${imageTag} -f ${dockerfilePath} ${buildContext}
                                     aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ECR_URI}
