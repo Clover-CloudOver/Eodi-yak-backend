@@ -37,6 +37,7 @@ public class SecurityConfig {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.addAllowedOrigin("http://localhost:3000");  // 로컬 환경
         corsConfiguration.addAllowedOrigin("http://127.0.0.1:3000");  // 로컬 환경
+        corsConfiguration.addAllowedOrigin("*");
         corsConfiguration.addAllowedMethod("GET");  // 허용할 HTTP 메서드
         corsConfiguration.addAllowedMethod("POST");
         corsConfiguration.addAllowedMethod("PUT");
