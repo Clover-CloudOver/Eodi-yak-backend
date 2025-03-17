@@ -58,7 +58,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Build & Push Services') {
             parallel {
                 stage('Build & Push medicine') {
