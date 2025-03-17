@@ -10,6 +10,16 @@ pipeline {
 
     stages {
 
+        stage('Checkout Source Code with Submodules') {
+            steps {
+                script {
+                    // Git 서브모듈 포함하여 체크아웃
+                    echo 'Checking out the repository with submodules'
+                    sh 'git submodule update --init --recursive'
+                }
+            }
+        }
+
         stage('Detect Changes') {
             steps {
                 script {
@@ -44,7 +54,14 @@ pipeline {
                 }
             }
         }
-        
+
+        stage('Move Submodule to src/main/resources') {
+            steps {
+                echo 'Copying submodule files to src/main/resources'
+                sh 'cp -r business-card-config/* src/main/resources/'
+            }
+        }
+
         stage('Build & Push Services') {
             parallel {
                 stage('Build & Push medicine') {
@@ -72,7 +89,6 @@ pipeline {
                 }
             }
         }
-
 
         stage('Clean Up Docker Images on Jenkins Server') {
             steps {
