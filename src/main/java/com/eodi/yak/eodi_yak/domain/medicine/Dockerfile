@@ -3,6 +3,10 @@ FROM openjdk:17-jdk-slim AS builder
 
 WORKDIR /app
 
+# 전체 소스 코드 복사
+COPY . .
+
+RUN chmod +x ./gradlew
 RUN ./gradlew dependencies
 
 RUN apt-get update && apt-get install -y protobuf-compiler wget unzip
@@ -13,8 +17,6 @@ RUN if ! command -v gradle &> /dev/null; then \
     ln -s /opt/gradle-8.12.1/bin/gradle /usr/bin/gradle; \
     fi
 
-# 전체 소스 코드 복사
-COPY . .
 
 # 불필요한 도메인 삭제
 RUN rm -rf src/main/java/com/eodi/yak/eodi_yak/domain/reservation
@@ -31,7 +33,6 @@ RUN chmod +x /usr/local/bin/protoc-gen-grpc-java
 RUN protoc --proto_path=src/main/proto --java_out=./src/main/java --grpc-java_out=./src/main/java medicine.proto
 
 # gradlew를 통해 실행 가능한 jar파일 생성
-RUN chmod +x ./gradlew
 RUN ./gradlew bootJar
 
 # 런타임 스테이지
