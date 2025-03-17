@@ -30,6 +30,7 @@ RUN ./gradlew generateProto -i --stacktrace
 RUN ./gradlew build
 
 RUN ls -R build/
+RUN ls -R /app/build/libs
 
 # gradlew를 통해 실행 가능한 jar파일 생성
 RUN ./gradlew bootJar
