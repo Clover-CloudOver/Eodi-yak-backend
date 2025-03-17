@@ -26,7 +26,14 @@ RUN rm -rf src/main/java/com/eodi/yak/eodi_yak/domain/pharmacy
 #RUN protoc --proto_path=src/main/proto --java_out=./src/main/java --grpc-java_out=./src/main/java medicine.proto
 #RUN protoc --proto_path=src/main/proto --java_out=./src/main/java --grpc-java_out=./src/main/java pharmacy.proto
 
-RUN ./gradlew generateProto
+RUN ./gradlew generateProto -i
+
+RUN ls -R /app/build/generated/source/proto/main/java  # 경로 확인용
+RUN ls -R /app/build/generated/source/proto/main/grpc  # 경로 확인용
+
+RUN ls -R ./build/generated/source/proto/main/java  # 경로 확인용
+RUN ls -R ./build/generated/source/proto/main/grpc  # 경로 확인용
+
 
 COPY /app/build/generated/source/proto/main/java /app/src/main/java
 COPY /app/build/generated/source/proto/main/grpc /app/src/main/java
