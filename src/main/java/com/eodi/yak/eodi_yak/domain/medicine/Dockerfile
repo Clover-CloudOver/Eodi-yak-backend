@@ -25,6 +25,7 @@ RUN rm -rf src/main/java/com/eodi/yak/eodi_yak/domain/pharmacy
 # gRPC 관련 코드 생성 (프로토콜 파일 컴파일)
 #RUN protoc --proto_path=src/main/proto --java_out=./src/main/java --grpc-java_out=./src/main/java medicine.proto
 #RUN protoc --proto_path=src/main/proto --java_out=./src/main/java --grpc-java_out=./src/main/java pharmacy.proto
+RUN ls -R build/
 
 RUN ./gradlew generateProto -i --stacktrace
 
