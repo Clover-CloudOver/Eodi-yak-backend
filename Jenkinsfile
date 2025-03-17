@@ -8,16 +8,18 @@ pipeline {
         AWS_REGION = 'ap-northeast-2'
     }
 
-    stage('Checkout Source Code with Submodules') {
-        steps {
-            script {
-                echo 'Checking out the repository with submodules'
-                withCredentials([usernamePassword(credentialsId: 'github-credentials', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
-                    sh """
-                        git config --global credential.helper 'store'
-                        git submodule update --init --recursive
-                        git submodule update --remote
-                    """
+    stages {
+        stage('Checkout Source Code with Submodules') {
+            steps {
+                script {
+                    echo 'Checking out the repository with submodules'
+                    withCredentials([usernamePassword(credentialsId: 'github-credentials', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+                        sh """
+                            git config --global credential.helper 'store'
+                            git submodule update --init --recursive
+                            git submodule update --remote
+                        """
+                    }
                 }
             }
         }
