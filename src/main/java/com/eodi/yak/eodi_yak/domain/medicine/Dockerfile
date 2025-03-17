@@ -28,15 +28,12 @@ RUN rm -rf src/main/java/com/eodi/yak/eodi_yak/domain/pharmacy
 
 RUN ./gradlew generateProto -i
 
-RUN ls -R /app/build/generated/source/proto/main/java  # 경로 확인용
-RUN ls -R /app/build/generated/source/proto/main/grpc  # 경로 확인용
-
 RUN ls -R ./build/generated/source/proto/main/java  # 경로 확인용
 RUN ls -R ./build/generated/source/proto/main/grpc  # 경로 확인용
 
 
-COPY /app/build/generated/source/proto/main/java /app/src/main/java
-COPY /app/build/generated/source/proto/main/grpc /app/src/main/java
+COPY ./build/generated/source/proto/main/java /app/src/main/java
+COPY ./build/generated/source/proto/main/grpc /app/src/main/java
 
 RUN ./gradlew clean build
 
