@@ -28,8 +28,8 @@ RUN rm -rf src/main/java/com/eodi/yak/eodi_yak/domain/pharmacy
 
 RUN ./gradlew generateProto
 
-#RUN ls -R ./src/main/java/medicine
-#RUN ls -R ./src/main/java/pharmacy
+RUN ls -R src/main/java/medicine
+RUN ls -R src/main/java/pharmacy
 
 RUN ./gradlew clean build
 
