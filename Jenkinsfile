@@ -76,7 +76,7 @@ pipeline {
                                 echo "WORKSPACE : ${WORKSPACE}"
 
                                 sh """
-                                    echo "Current working directory: $(pwd)"
+                                    echo "Current working directory: \$(pwd)"
                                     echo "Dockerfile Path: ${dockerfilePath}"
                                     echo "Build Context: ${buildContext}"
 
@@ -84,6 +84,7 @@ pipeline {
                                     aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ECR_URI}
                                     docker push ${imageTag}
                                 """
+
                             }
                         }
                     }
