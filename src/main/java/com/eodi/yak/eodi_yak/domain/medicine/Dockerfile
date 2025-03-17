@@ -36,6 +36,8 @@ RUN protoc --proto_path=src/main/proto --java_out=./src/main/java --grpc-java_ou
 RUN ls -R ./src/main/java/medicine
 RUN ls -R ./src/main/java/pharmacy
 
+RUN ./gradlew clean build
+
 # gradlew를 통해 실행 가능한 jar파일 생성
 RUN ./gradlew bootJar
 
