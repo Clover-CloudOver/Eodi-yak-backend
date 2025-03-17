@@ -9,13 +9,16 @@ pipeline {
     }
 
     stages {
-
         stage('Checkout Source Code with Submodules') {
             steps {
                 script {
-                    // Git 서브모듈 포함하여 체크아웃
                     echo 'Checking out the repository with submodules'
-                    sh 'git submodule update --init --recursive'
+                    withCredentials([usernamePassword(credentialsId: 'github-credentials', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+                        sh """
+                            git config --global credential.helper 'store'
+                            git submodule update --init --recursive
+                        """
+                    }
                 }
             }
         }
