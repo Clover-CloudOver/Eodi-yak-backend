@@ -27,7 +27,7 @@ RUN rm -rf src/main/java/com/eodi/yak/eodi_yak/domain/pharmacy
 #RUN protoc --proto_path=src/main/proto --java_out=./src/main/java --grpc-java_out=./src/main/java pharmacy.proto
 RUN ./gradlew generateProto -i --stacktrace
 
-RUN ./gradlew clean build
+RUN ./gradlew build
 
 RUN ls -R build/
 
