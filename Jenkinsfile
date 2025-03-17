@@ -63,7 +63,7 @@ pipeline {
             steps {
                 echo 'Copying submodule files to src/main/resources'
                 // 서브모듈의 파일을 src/main/resources로 복사
-                sh 'cp -r business-card-config/* src/main/resources/'
+                sh 'cp -r Eodi-yak-backend-config/* src/main/resources/'
             }
         }
 
