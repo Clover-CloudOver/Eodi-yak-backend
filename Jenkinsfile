@@ -58,15 +58,7 @@ pipeline {
                 }
             }
         }
-
-        stage('Move Submodule to src/main/resources') {
-            steps {
-                echo 'Copying submodule files to src/main/resources'
-                // 서브모듈의 파일을 src/main/resources로 복사
-                sh 'cp -r Eodi-yak-backend-config/* src/main/resources/'
-            }
-        }
-
+        
         stage('Build & Push Services') {
             parallel {
                 stage('Build & Push medicine') {
