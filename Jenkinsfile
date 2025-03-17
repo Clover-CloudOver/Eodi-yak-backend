@@ -76,7 +76,7 @@ pipeline {
                                 echo "WORKSPACE : ${WORKSPACE}"
 
                                 sh """
-                                    docker build -t ${imageTag} -f ${dockerfilePath} ${buildContext}
+                                    docker buildx build -t ${imageTag} -f ${dockerfilePath} ${buildContext} .
                                     aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ECR_URI}
                                     docker push ${imageTag}
                                 """
