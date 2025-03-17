@@ -31,7 +31,9 @@ RUN chmod +x /usr/local/bin/protoc-gen-grpc-java
 
 # gRPC 관련 코드 생성 (프로토콜 파일 컴파일)
 RUN protoc --proto_path=src/main/proto --java_out=./src/main/java --grpc-java_out=./src/main/java medicine.proto
+RUN protoc --proto_path=src/main/proto --java_out=./src/main/java --grpc-java_out=./src/main/java pharmacy.proto
 
+RUN ls -R .src/main/java/medicine
 RUN ls -R .src/main/java/pharmacy
 
 # gradlew를 통해 실행 가능한 jar파일 생성
