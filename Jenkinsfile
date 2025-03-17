@@ -14,10 +14,10 @@ pipeline {
                 script {
                     echo 'Checking out the repository with submodules'
                     withCredentials([usernamePassword(credentialsId: 'github-credentials', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+                        // Git 클론 및 서브모듈 초기화
                         sh """
                             git config --global credential.helper 'store'
                             git submodule update --init --recursive
-                            git submodule update --remote
                         """
                     }
                 }
@@ -62,6 +62,7 @@ pipeline {
         stage('Move Submodule to src/main/resources') {
             steps {
                 echo 'Copying submodule files to src/main/resources'
+                // 서브모듈의 파일을 src/main/resources로 복사
                 sh 'cp -r business-card-config/* src/main/resources/'
             }
         }
