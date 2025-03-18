@@ -21,7 +21,6 @@ public class MemberController {
     private final MemberService memberService;
     private final JWTUtil jwtUtil;
 
-
     // 회원가입 (JWT 토큰 이용)
     @PostMapping("/signup")
     @Operation(summary = "사용자 회원가입", description = "새로운 사용자를 등록합니다.")
