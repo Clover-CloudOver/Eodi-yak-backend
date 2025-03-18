@@ -33,7 +33,7 @@ RUN ls -R build/
 RUN ls -R /app/build/libs
 
 # gradlew를 통해 실행 가능한 jar파일 생성
-./gradlew clean bootJar --no-daemon
+RUN ./gradlew clean bootJar --no-daemon
 
 # 런타임 스테이지
 FROM openjdk:17
