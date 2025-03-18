@@ -28,10 +28,12 @@ RUN rm -rf src/main/java/com/eodi/yak/eodi_yak/domain/pharmacy
 RUN ./gradlew generateProto -i --stacktrace
 RUN chmod 777 build/generated/source/proto/main/grpc/pharmacy
 
-RUN chmod +x build/generated/source/proto/main/grpc/pharmacy
-RUN chmod +x build/generated/source/proto/main/grpc/medicine
-RUN cp build/generated/source/proto/main/grpc/pharmacy .
-RUN cp build/generated/source/proto/main/grpc/medicine .
+#RUN chmod +x build/generated/source/proto/main/grpc/pharmacy
+#RUN chmod +x build/generated/source/proto/main/grpc/medicine
+#RUN cp build/generated/source/proto/main/grpc/pharmacy .
+#RUN cp build/generated/source/proto/main/grpc/medicine .
+
+RUN ls -R build/generated/source/proto/main/grpc/
 
 RUN ./gradlew build
 
