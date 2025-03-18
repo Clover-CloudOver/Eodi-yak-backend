@@ -33,8 +33,6 @@ RUN chmod 777 build/generated/source/proto/main/grpc/pharmacy
 #RUN cp build/generated/source/proto/main/grpc/pharmacy .
 #RUN cp build/generated/source/proto/main/grpc/medicine .
 
-RUN ls -R build/generated/source/proto/main/grpc/
-
 RUN ./gradlew build
 
 RUN ls -R build/
@@ -43,7 +41,7 @@ RUN ls -R /app/build/libs
 
 # 런타임 스테이지
 FROM openjdk:17
-COPY --from=builder build/libs/*.jar app.jar
+COPY --from=builder app/build/libs/*.jar app.jar
 
 # 애플리케이션 포트 열기 (& gRPC 서버)
 EXPOSE 8080 9090
