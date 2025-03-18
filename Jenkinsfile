@@ -4,7 +4,7 @@ pipeline {
     environment {
         // AWS ECR
         AWS_ECR_CREDENTIAL_ID = 'aws-ecr-credentials'
-        AWS_ECR_URI = '535532591444.dkr.ecr.ap-northeast-2.amazonaws.com/clover/cicd'
+        AWS_ECR_URI = '975050092378.dkr.ecr.ap-northeast-2.amazonaws.com/clover/cicd'
         AWS_REGION = 'ap-northeast-2'
     }
 
