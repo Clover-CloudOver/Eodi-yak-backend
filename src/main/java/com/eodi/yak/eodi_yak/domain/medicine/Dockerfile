@@ -26,14 +26,14 @@ RUN rm -rf src/main/java/com/eodi/yak/eodi_yak/domain/pharmacy
 #RUN protoc --proto_path=src/main/proto --java_out=./src/main/java --grpc-java_out=./src/main/java medicine.proto
 #RUN protoc --proto_path=src/main/proto --java_out=./src/main/java --grpc-java_out=./src/main/java pharmacy.proto
 RUN ./gradlew generateProto -i --stacktrace
+RUN build/generated/source/proto/main/grpc/pharmacy .
+RUN build/generated/source/proto/main/grpc/pharmacy .
 
 RUN ./gradlew build
 
 RUN ls -R build/
 RUN ls -R /app/build/libs
 
-# gradlew를 통해 실행 가능한 jar파일 생성
-RUN ./gradlew clean bootJar --no-daemon
 
 # 런타임 스테이지
 FROM openjdk:17
