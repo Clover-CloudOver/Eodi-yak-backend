@@ -102,6 +102,10 @@ tasks.withType(Copy) {
 	duplicatesStrategy = DuplicatesStrategy.INCLUDE // 또는 EXCLUDE
 }
 
+tasks.named('compileJava') {
+	dependsOn tasks.named('generateProto')
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
 }
