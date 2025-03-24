@@ -1,5 +1,5 @@
 # 빌드 스테이지
-FROM debian:bullseye-slim AS builder
+FROM openjdk:17-jdk-slim AS builder
 
 WORKDIR /app
 
