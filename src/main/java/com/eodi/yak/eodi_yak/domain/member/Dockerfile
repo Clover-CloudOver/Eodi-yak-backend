@@ -15,7 +15,7 @@ RUN rm -rf src/main/java/com/eodi/yak/eodi_yak/domain/reservation
 RUN rm -rf src/main/java/com/eodi/yak/eodi_yak/domain/pharmacy
 
 # gRPC 관련 코드 생성 (프로토콜 파일 컴파일)
-RUN ./gradlew generateProto -i --stacktrace
+RUN ./gradlew generateProto -i
 RUN chmod 777 build/generated/source/proto/main/grpc/member
 
 RUN ./gradlew build
@@ -28,4 +28,4 @@ COPY --from=builder app/build/libs/*.jar app.jar
 EXPOSE 8080 9090
 
 # 애플리케이션 실행
-ENTRYPOINT ["java", "-jar", "/app.jar", "--spring.profiles.active=test"]
+ENTRYPOINT ["java", "-jar", "/app.jar", "--spring.profiles.active=dev"]
