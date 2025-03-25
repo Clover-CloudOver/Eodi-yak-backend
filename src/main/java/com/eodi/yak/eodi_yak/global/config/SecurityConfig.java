@@ -6,6 +6,7 @@ import com.eodi.yak.eodi_yak.domain.auth.LoginFilter;
 import lombok.RequiredArgsConstructor;
 import net.devh.boot.grpc.server.security.authentication.BasicGrpcAuthenticationReader;
 import net.devh.boot.grpc.server.security.authentication.GrpcAuthenticationReader;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -32,13 +33,17 @@ public class SecurityConfig {
         return configuration.getAuthenticationManager();
     }
 
+    @Value("${cors.allowed-origin}")
+    private String allowedOrigin;
+
     @Bean
     public UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.addAllowedOrigin("http://localhost:3000");  // 로컬 환경
         corsConfiguration.addAllowedOrigin("http://127.0.0.1:3000");  // 로컬 환경
         //corsConfiguration.addAllowedOrigin("*");
-        corsConfiguration.addAllowedOrigin("http://eodi-yak.local:32050");
+        //corsConfiguration.addAllowedOrigin("http://eodi-yak.local:32050");
+        corsConfiguration.addAllowedOrigin(allowedOrigin);
         corsConfiguration.addAllowedMethod("GET");  // 허용할 HTTP 메서드
         corsConfiguration.addAllowedMethod("POST");
         corsConfiguration.addAllowedMethod("PUT");
