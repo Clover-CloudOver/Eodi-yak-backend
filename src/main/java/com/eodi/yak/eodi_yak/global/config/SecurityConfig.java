@@ -33,7 +33,7 @@ public class SecurityConfig {
         return configuration.getAuthenticationManager();
     }
 
-    @Value("${cors.allowed-origin}")
+    @Value("${cors.allow.origins}")
     private String allowedOrigin;
 
     @Bean
