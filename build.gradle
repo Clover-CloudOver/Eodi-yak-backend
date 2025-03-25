@@ -124,3 +124,6 @@ task copyPrivate(type: Copy) {
 	}
 }
 
+tasks.named('processResources') {
+	dependsOn copyPrivate
+}
