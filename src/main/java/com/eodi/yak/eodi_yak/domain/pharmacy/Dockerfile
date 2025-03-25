@@ -18,7 +18,7 @@ RUN rm -rf src/main/java/com/eodi/yak/eodi_yak/domain/reservation
 RUN ./gradlew generateProto -i
 RUN chmod 777 build/generated/source/proto/main/grpc/pharmacy
 
-RUN ./gradlew build
+RUN ./gradlew build -Dspring.profiles.active=dev
 
 # 런타임 스테이지
 FROM openjdk:17
