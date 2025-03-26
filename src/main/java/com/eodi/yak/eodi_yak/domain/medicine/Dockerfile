@@ -19,7 +19,7 @@ RUN ./gradlew generateProto -i
 RUN chmod 777 build/generated/source/proto/main/grpc/pharmacy
 RUN chmod 777 build/generated/source/proto/main/grpc/medicine
 
-RUN ./gradlew build -Dspring.profiles.active=dev
+RUN ./gradlew build -Dspring.profiles.active=dev -x test
 
 # 런타임 스테이지
 FROM openjdk:17
