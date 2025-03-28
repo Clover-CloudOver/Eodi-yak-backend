@@ -113,8 +113,13 @@ def buildAndPushDockerImage(serviceName, dockerfilePath, imageTag) {
     }
 }
 
+
 def deployManifest(serviceName, manifestFile) {
-    withEnv(["GIT_SSH_COMMAND=ssh -i /var/lib/jenkins/.ssh/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"]) {
+    withEnv([
+        "GIT_SSH_COMMAND=ssh -i /var/lib/jenkins/.ssh/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no",
+        "AWS_ECR_URI=${AWS_ECR_URI}",  // AWS_ECR_URI를 파이프라인 내에서 정의하기
+        "BUILD_NUMBER=${BUILD_NUMBER}"  // Jenkins의 기본 BUILD_NUMBER 환경 변수를 사용
+    ]) {
         sh """
         set -e
         WORK_DIR=\$(mktemp -d)  # \$ 추가하여 $를 이스케이프
@@ -130,3 +135,4 @@ def deployManifest(serviceName, manifestFile) {
         """
     }
 }
+
