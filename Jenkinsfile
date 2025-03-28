@@ -122,7 +122,7 @@ def deployManifest(serviceName, manifestFile) {
     ]) {
         sh """
         set -e
-        WORK_DIR=\$(mktemp -d)  # \$ 추가하여 $를 이스케이프
+        WORK_DIR=\$(mktemp -d) 
         cd \$WORK_DIR
         git clone git@github.com:Clover-CloudOver/Eodi-yak-manifest.git
         cd Eodi-yak-manifest
