@@ -193,12 +193,12 @@ def deployManifest(serviceName, manifestFile) {
         git add ${manifestFile}
         git commit -m "Update image tag to eodiyak-backend-${serviceName}-${BUILD_NUMBER}"
         ####  Push 전에 다시 한 번 Rebase 수행 (Jenkins 병렬로 실행되다보니 발생되는 문제 push 직전에 다른 jenkins job이 수행되어 base가 변경되는 상황)
-        #git pull --rebase origin main
-        #git push origin main
-        # Push 실패 시 최대 3회 재시도
-        for i in {1..3}; do
-            git push origin main && break || git pull --rebase origin main
-        done
+        git pull --rebase origin main
+        git push origin main
+        ## Push 실패 시 최대 3회 재시도
+        #for i in {1..3}; do
+        #    git push origin main && break || git pull --rebase origin main
+        #done
         """
     }
 }
