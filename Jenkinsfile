@@ -192,7 +192,7 @@ def deployManifest(serviceName, manifestFile) {
         git config user.email "lemon6565@naver.com"
         git add ${manifestFile}
         git commit -m "Update image tag to eodiyak-backend-${serviceName}-${BUILD_NUMBER}"
-        git push origin msa
+        git push origin main
         """
     }
 }
