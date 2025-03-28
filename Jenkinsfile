@@ -78,7 +78,66 @@ pipeline {
                         }
                     }
                 }
-                // Repeat for other services...
+                stage('Build & Push member') {
+                    when {
+                        expression { return env.CHANGED_SERVICES.contains('member') }
+                    }
+                    steps {
+                        script {
+                            buildAndPushDockerImage('member', "src/main/java/com/eodi/yak/eodi_yak/domain/member/Dockerfile", "${AWS_ECR_URI}:eodiyak-backend-member-${BUILD_NUMBER}")
+                        }
+                    }
+                }
+                stage('Deploy Backend Image (member)') {
+                    when {
+                        expression { return env.CHANGED_SERVICES.contains('member') }
+                    }
+                    steps {
+                        script {
+                            deployManifest('member', 'backend-member.yaml')
+                        }
+                    }
+                }
+                stage('Build & Push pharmacy') {
+                    when {
+                        expression { return env.CHANGED_SERVICES.contains('pharmacy') }
+                    }
+                    steps {
+                        script {
+                            buildAndPushDockerImage('pharmacy', "src/main/java/com/eodi/yak/eodi_yak/domain/pharmacy/Dockerfile", "${AWS_ECR_URI}:eodiyak-backend-pharmacy-${BUILD_NUMBER}")
+                        }
+                    }
+                }
+                stage('Deploy Backend Image (pharmacy)') {
+                    when {
+                        expression { return env.CHANGED_SERVICES.contains('pharmacy') }
+                    }
+                    steps {
+                        script {
+                            deployManifest('pharmacy', 'backend-pharmacy.yaml')
+                        }
+                    }
+                }
+                stage('Build & Push reservation') {
+                    when {
+                        expression { return env.CHANGED_SERVICES.contains('reservation') }
+                    }
+                    steps {
+                        script {
+                            buildAndPushDockerImage('reservation', "src/main/java/com/eodi/yak/eodi_yak/domain/reservation/Dockerfile", "${AWS_ECR_URI}:eodiyak-backend-reservation-${BUILD_NUMBER}")
+                        }
+                    }
+                }
+                stage('Deploy Backend Image (reservation)') {
+                    when {
+                        expression { return env.CHANGED_SERVICES.contains('reservation') }
+                    }
+                    steps {
+                        script {
+                            deployManifest('reservation', 'backend-reservation.yaml')
+                        }
+                    }
+                }
             }
         }
 
