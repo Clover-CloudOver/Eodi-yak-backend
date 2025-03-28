@@ -189,6 +189,7 @@ def deployManifest(serviceName, manifestFile) {
     ]) {
         sh """
         set -e
+        ####### On-premise
         WORK_DIR=\$(mktemp -d) 
         cd \$WORK_DIR
         git clone git@github.com:Clover-CloudOver/Eodi-yak-manifest.git
@@ -200,13 +201,22 @@ def deployManifest(serviceName, manifestFile) {
         git config user.email "lemon6565@naver.com"
         git add ${manifestFile}
         git commit -m "Update image tag to eodiyak-backend-${serviceName}-${BUILD_NUMBER}"
-        ####  Push 전에 다시 한 번 Rebase 수행 (Jenkins 병렬로 실행되다보니 발생되는 문제 push 직전에 다른 jenkins job이 수행되어 base가 변경되는 상황)
-        git pull --rebase origin main
         git push origin main
-        ## Push 실패 시 최대 3회 재시도
-        #for i in {1..3}; do
-        #    git push origin main && break || git pull --rebase origin main
-        #done
+
+
+        ####### AWS Image Deployment
+        cd \$WORK_DIR
+        git clone git@github.com:Clover-CloudOver/Eodi-yak-terraform.git
+        cd Eodi-yak-terraform/helm-charts/my-app/
+        #### 최신 변경 사항 가져오기
+        git pull --rebase origin master
+        sed -i "s|image: ${AWS_ECR_URI}:eodiyak-backend-${serviceName}.*|image: ${AWS_ECR_URI}:eodiyak-backend-${serviceName}-${BUILD_NUMBER}|" values.yaml
+        git config user.name "1006lem"
+        git config user.email "lemon6565@naver.com"
+        git add values.yaml
+        git commit -m "Update image tag to eodiyak-backend-${serviceName}-${BUILD_NUMBER}"
+        git push origin master
+
         """
     }
 }
