@@ -15,7 +15,7 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: 'github-credentials', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
                         sh """
                             git config --global credential.helper 'store'
-                            git submodule update --init --recursive
+                            git submodule update --init --remote --recursive
                         """
                     }
                 }
