@@ -74,7 +74,9 @@ pipeline {
                     }
                     steps {
                         script {
-                            deployManifest('medicine', 'backend-medicine.yaml')
+                            lock('git-lock') {
+                                deployManifest('medicine', 'backend-medicine.yaml')
+                            }
                         }
                     }
                 }
@@ -94,7 +96,9 @@ pipeline {
                     }
                     steps {
                         script {
-                            deployManifest('member', 'backend-member.yaml')
+                            lock('git-lock') {
+                                deployManifest('member', 'backend-member.yaml')
+                            }
                         }
                     }
                 }
@@ -114,7 +118,9 @@ pipeline {
                     }
                     steps {
                         script {
-                            deployManifest('pharmacy', 'backend-pharmacy.yaml')
+                            lock('git-lock') {
+                                deployManifest('pharmacy', 'backend-pharmacy.yaml')
+                            }
                         }
                     }
                 }
@@ -134,7 +140,9 @@ pipeline {
                     }
                     steps {
                         script {
-                            deployManifest('reservation', 'backend-reservation.yaml')
+                            lock('git-lock') {
+                                deployManifest('reservation', 'backend-reservation.yaml')
+                            }
                         }
                     }
                 }
