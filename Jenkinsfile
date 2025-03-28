@@ -117,11 +117,11 @@ def deployManifest(serviceName, manifestFile) {
     withEnv(["GIT_SSH_COMMAND=ssh -i /var/lib/jenkins/.ssh/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"]) {
         sh """
         set -e
-        WORK_DIR=$(mktemp -d)
-        cd $WORK_DIR
+        WORK_DIR=\$(mktemp -d)  # \$ 추가하여 $를 이스케이프
+        cd \$WORK_DIR
         git clone git@github.com:Clover-CloudOver/Eodi-yak-manifest.git
         cd Eodi-yak-manifest
-        sed -i "s|image: $AWS_ECR_URI.*|image: $AWS_ECR_URI:eodiyak-backend-${serviceName}-${BUILD_NUMBER}|" ${manifestFile}
+        sed -i "s|image: ${AWS_ECR_URI}.*|image: ${AWS_ECR_URI}:eodiyak-backend-${serviceName}-${BUILD_NUMBER}|" ${manifestFile}
         git config user.name "1006lem"
         git config user.email "lemon6565@naver.com"
         git add ${manifestFile}
