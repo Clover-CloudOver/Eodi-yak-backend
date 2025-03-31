@@ -197,8 +197,8 @@ def deployManifest(serviceName, manifestFile) {
         #### 최신 변경 사항 가져오기
         git pull --rebase origin main
         sed -i "s|image: ${AWS_ECR_URI}.*|image: ${AWS_ECR_URI}:eodiyak-backend-${serviceName}-${BUILD_NUMBER}|" ${manifestFile}
-        git config user.name "1006lem"
-        git config user.email "lemon6565@naver.com"
+        git config user.name "Hansilverline"
+        git config user.email "kodrdja25@gmail.com"
         git add ${manifestFile}
         git commit -m "Update image tag to eodiyak-backend-${serviceName}-${BUILD_NUMBER}"
         git push origin main
