@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         AWS_ECR_CREDENTIAL_ID = 'aws-ecr-credentials'
-        AWS_ECR_URI = '975050092378.dkr.ecr.ap-northeast-2.amazonaws.com/clover/cicd'
+        AWS_ECR_URI = '515966511821.dkr.ecr.ap-northeast-2.amazonaws.com/clover/cicd'
         AWS_REGION = 'ap-northeast-2'
     }
 
@@ -211,8 +211,8 @@ def deployManifest(serviceName, manifestFile) {
         #### 최신 변경 사항 가져오기
         git pull --rebase origin master
         sed -i "s|image: ${AWS_ECR_URI}:eodiyak-backend-${serviceName}.*|image: ${AWS_ECR_URI}:eodiyak-backend-${serviceName}-${BUILD_NUMBER}|" values.yaml
-        git config user.name "1006lem"
-        git config user.email "lemon6565@naver.com"
+        git config user.name "Hansilverline"
+        git config user.email "kodrdja25@gmail.com"
         git add values.yaml
         git commit -m "Update image tag to eodiyak-backend-${serviceName}-${BUILD_NUMBER}"
         git push origin master
