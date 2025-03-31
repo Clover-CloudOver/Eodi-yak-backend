@@ -17,6 +17,10 @@ import java.time.ZonedDateTime;
 public class MedicineServiceImpl extends MedicineServiceGrpc.MedicineServiceImplBase {
     private final MedicineRepository medicineRepository;
 
+    private String nvl(String value) {
+        return value != null ? value : "";
+    }
+
     @Override
     public void getMedicineById(Medicine.MedicineRequest request, StreamObserver<Medicine.MedicineResponse> responseObserver) {
         String medicineName = request.getMedicineName();
@@ -52,7 +56,7 @@ public class MedicineServiceImpl extends MedicineServiceGrpc.MedicineServiceImpl
                 .setPharmacyLatitude(String.valueOf(medicine.getPharmacy().getLatitude()))
                 .setPharmacyLongitude(String.valueOf(medicine.getPharmacy().getLongitude()))
                 .setPharmacyPhoneNumber(medicine.getPharmacy().getPhoneNumber())
-                .setPharmacyEmail(medicine.getPharmacy().getEmail())
+                .setPharmacyEmail(nvl(medicine.getPharmacy().getEmail()))
                 .build();
 
         // 클라이언트에게 응답 전송

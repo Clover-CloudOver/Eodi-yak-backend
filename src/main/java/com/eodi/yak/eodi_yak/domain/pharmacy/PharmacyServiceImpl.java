@@ -46,6 +46,10 @@ public class PharmacyServiceImpl extends PharmacyServiceGrpc.PharmacyServiceImpl
         responseObserver.onCompleted();
     }
 
+    private String nvl(String value) {
+        return value != null ? value : "";
+    }
+
     // Pharmacy를 Protobuf Pharmacy 객체로 변환
     private PharmacyOuterClass.Pharmacy toProtoPharmacy(Pharmacy pharmacy) {
         return PharmacyOuterClass.Pharmacy.newBuilder()
@@ -55,7 +59,8 @@ public class PharmacyServiceImpl extends PharmacyServiceGrpc.PharmacyServiceImpl
                 .setLatitude(String.valueOf(pharmacy.getLatitude()))
                 .setLongitude(String.valueOf(pharmacy.getLongitude()))
                 .setPhoneNumber(pharmacy.getPhoneNumber())
-                .setEmail(pharmacy.getEmail())
+                .setEmail(nvl(pharmacy.getEmail()))
+                //.setEmail(pharmacy.getEmail())
                 .build();
     }
 
